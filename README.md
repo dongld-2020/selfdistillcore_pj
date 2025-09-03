@@ -1,4 +1,4 @@
-markdown# SelfDistillCore Federated Learning Project
+## SelfDistillCore Federated Learning Project
 
 [![GitHub license](https://img.shields.io/github/license/dongld-2020/selfdistillcore_pj)](https://github.com/dongld-2020/selfdistillcore_pj/blob/main/LICENSE)
 [![GitHub issues](https://img.shields.io/github/issues/dongld-2020/selfdistillcore_pj)](https://github.com/dongld-2020/selfdistillcore_pj/issues)
@@ -130,4 +130,4 @@ This project is licensed under the MIT License - see the LICENSE file for detail
 Contact
 
 GitHub: dongld-2020
-Email: dongld@example.com (replace with your email)
+Email: dongld@ueh.edu.vn

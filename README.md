@@ -1,89 +1,133 @@
-Federated Learning Framework with Self-DistillCore
-This project is a customized Federated Learning (FL) framework designed to compare the performance of various FL algorithms, including FedAvg, FedProx, Scaffold, FedAdam, FedEMA, FedAvgM, and Self-DistillCore. The framework is highly configurable and supports multiple datasets and model architectures, making it suitable for research experiments.
+markdown# SelfDistillCore Federated Learning Project
 
-Key Features
-Multi-Algorithm Support: Compare the effectiveness of several popular FL algorithms.
+[![GitHub license](https://img.shields.io/github/license/dongld-2020/selfdistillcore_pj)](https://github.com/dongld-2020/selfdistillcore_pj/blob/main/LICENSE)
+[![GitHub issues](https://img.shields.io/github/issues/dongld-2020/selfdistillcore_pj)](https://github.com/dongld-2020/selfdistillcore_pj/issues)
+[![GitHub stars](https://img.shields.io/github/stars/dongld-2020/selfdistillcore_pj)](https://github.com/dongld-2020/selfdistillcore_pj/stargazers)
 
-Diverse Model Architectures: Compatible with models such as LeNet5, ResNet18Blood, VGG11Light, and ResNet32NoBatchNorm.
+This project implements the **SelfDistillCore** algorithm for Federated Learning (FL), along with several baseline FL algorithms for comparison. It supports training on various datasets using PyTorch, focusing on non-IID data distributions. The project includes server-client architecture, model training, evaluation, and visualization tools.
 
-Non-IID Data Generation: Uses a Dirichlet distribution to create non-IID datasets, simulating real-world scenarios.
+## Key Features
+- **Federated Learning Algorithms**:
+  - SelfDistillCore (core contribution: knowledge distillation with retention factor for sparse updates)
+  - FedAvg
+  - FedProx
+  - SCAFFOLD
+  - FedAdam
+  - FedAvgM
+  - FedEMA
+- **Supported Datasets**:
+  - MNIST
+  - BloodMNIST (from MedMNIST)
+  - OrganAMNIST (from MedMNIST)
+  - CIFAR-10
+- **Models**:
+  - LeNet5 (for MNIST)
+  - ResNet18Blood (custom ResNet for BloodMNIST)
+  - VGG11Light (for OrganAMNIST)
+  - ResNet32NoBatchNorm (for CIFAR-10)
+- **Non-IID Data Partitioning**: Uses Dirichlet distribution for heterogeneous data splits.
+- **Visualization Tools**:
+  - Plot data distribution across clients.
+  - Plot training metrics (loss, accuracy) for comparison.
+- **Configurable Parameters**: Learning rate, epochs, alpha (for Dirichlet), retention factors, etc.
 
-Automated Logging and Visualization: Automatically saves performance metrics like accuracy, loss, and communication costs to CSV files and generates comparison plots.
-
-Directory Structure
-.
+## Project Structure
+selfdistillcore_pj/
 ├── src/
-│   ├── __init__.py.py      # Marks the directory as a Python package
-│   ├── client.py           # Client-side logic
-│   ├── config.py           # Global configuration parameters
-│   ├── model.py            # Model architectures (LeNet5, ResNet, etc.)
-│   └── server.py           # Federated server logic
-├── check_retention_factor.py # Script to check the retention factor for Self-DistillCore
-├── plot_data_distibution.py  # Script for analyzing and visualizing data distribution
-├── plot_figure.py          # Script for plotting results from CSV files
-├── run.py                  # Main script to run experiments
-└── plot figure arguments.docx # Example file for plot script arguments
-Installation
-Clone the repository:
+│   ├── client.py          # Client-side training logic
+│   ├── config.py          # Configuration parameters (seeds, epochs, etc.)
+│   ├── model.py           # Model definitions (LeNet5, ResNet, etc.)
+│   ├── server.py          # Server-side aggregation and evaluation
+│   └── utils.py           # Utilities (data partitioning, evaluation)
+├── check_retention_factor.py  # Script to check retention factor growth
+├── plot_data_distribution.py  # Script to visualize client data distribution
+├── plot_figure.py         # Script to plot metrics from CSV results
+├── run.py                 # Main script to run the FL training
+├── data/                  # Dataset storage (auto-downloaded)
+├── logs/                  # Log files
+├── results_*.csv          # Output CSV files with metrics
+└── README.md              # This file
+text## Requirements
+- Python 3.8+
+- PyTorch 1.12+
+- Torchvision
+- MedMNIST (for BloodMNIST and OrganAMNIST)
+- NumPy, Pandas, Matplotlib, Scikit-learn
 
-Bash
-
-git clone https://github.com/your-username/your-repo-name.git
-cd your-repo-name
-Install the required libraries:
-
-Bash
-
-pip install torch torchvision pandas numpy matplotlib scikit-learn medmnist
+Install dependencies:
+```bash
+pip install torch torchvision medmnist numpy pandas matplotlib scikit-learn
 Usage
-1. Running an Experiment
-Use the run.py file to start the training process.
+1. Running the Federated Learning Training
+Use run.py to start the training process. It will prompt for the algorithm and dataset.
+bashpython run.py
 
-Bash
+Prompts:
 
-python run.py
-You can edit the algorithm, dataset_name, and model_name variables directly in the run.py file to configure your experiment.
+Algorithm: fedavg, fedprox, scaffold, selfdistillcore, fedadam, fedavgm, fedema
+Dataset: mnist, bloodmnist, organamnist, cifar10
 
-Results will be saved to a CSV file in the root directory, named with the format: results_{algorithm}_{params}.csv.
 
-2. Visualizing Results
-After an experiment is complete, you can use plot_figure.py to generate comparison plots.
+Output:
 
-Bash
+Logs in ./logs/
+Results CSV: results_<algorithm>_clients<NUM>_rounds<NUM>_epochs<NUM>_alpha<ALPHA>_lr<LR>_seed<SEED>_<model>.csv
+Metrics include accuracy, loss, precision, recall, F1-score, per-class accuracy, confusion matrix, and communication cost.
 
-python plot_figure.py
-The script will prompt you to enter the names of the CSV files you want to compare, separated by a comma. For example:
-results_selfdistillcore_clients50_rounds100_epochs5_alpha0.2_lr0.01_seed42_resnet18blood.csv, results_fedavg_clients50_rounds100_epochs5_alpha0.2_lr0.01_seed42_resnet18blood.csv
 
-Plots comparing loss and accuracy will be generated and saved.
+
+2. Plotting Data Distribution
+Visualize how data is distributed across clients (non-IID).
+bashpython plot_data_distribution.py
+
+Outputs statistics and plots for MNIST, BloodMNIST, OrganAMNIST, CIFAR-10.
+Includes Gini coefficient for non-IID measure.
+
+3. Plotting Metrics
+Compare metrics (loss, accuracy) from multiple CSV result files.
+bashpython plot_figure.py
+
+Prompt: Enter CSV files (comma-separated, e.g., results_fedavg_...,results_selfdistillcore_...)
+Outputs: PNG file with comparison plots.
+
+4. Checking Retention Factor (for SelfDistillCore)
+bashpython check_retention_factor.py
+
+Plots retention factor growth over rounds.
 
 Configuration
-All global parameters are defined in the src/config.py file. You can modify this file to customize your experiments.
+Edit src/config.py for hyperparameters:
 
-General Parameters: GLOBAL_SEED, NUM_CLIENTS, NUM_ROUNDS, LOCAL_EPOCHS.
+GLOBAL_SEED: 42
+NUM_CLIENTS: 50
+NUM_ROUNDS: 200
+LOCAL_EPOCHS: 5
+ALPHA: 0.2 (Dirichlet parameter)
+LEARNING_RATE: 0.01
+K_PERCENT: 0.20 (sparsity for SelfDistillCore)
+Algorithm-specific params (e.g., MU for FedProx, BETA_EMA for FedEMA)
 
-Data Parameters: ALPHA (for Dirichlet distribution).
+Results and Evaluation
 
-Model Parameters: LEARNING_RATE, BATCH_SIZE.
+Training saves metrics per round in CSV.
+Use plot_figure.py for visual comparisons.
+Focus on non-IID scenarios; SelfDistillCore aims to improve convergence with sparse updates.
 
-Network Parameters: SERVER_PORT.
+Citation
+If you use this code, please cite:
+text@misc{selfdistillcore_pj,
+  author = {Dong Le Dinh},
+  title = {SelfDistillCore Federated Learning Project},
+  year = {2025},
+  publisher = {GitHub},
+  journal = {GitHub repository},
+  howpublished = {\url{https://github.com/dongld-2020/selfdistillcore_pj}}
+}
+Contributing
+Contributions are welcome! Please open an issue or submit a pull request.
+License
+This project is licensed under the MIT License - see the LICENSE file for details.
+Contact
 
-Algorithm-specific Parameters:
-
-SelfDistillCore: INITIAL_RETENTION, FINAL_RETENTION, GROWTH_RATE, K_PERCENT.
-
-FedProx: MU.
-
-FedAdam: SERVER_LR, BETA1, BETA2, TAU.
-
-FedEMA: BETA_EMA, LAMBDA.
-
-FedAvgM: BETA.
-
-Data Analysis
-You can run plot_data_distibution.py to analyze and visualize the non-IID data distribution across clients.
-
-Bash
-
-python plot_data_distibution.py
-This script will print statistics such as the average number of samples and classes per client, as well as the Gini coefficient to measure the degree of non-IID.
+GitHub: dongld-2020
+Email: dongld@example.com (replace with your email)

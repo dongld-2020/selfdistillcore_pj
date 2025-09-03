@@ -35,31 +35,31 @@ This project implements the **SelfDistillCore** algorithm for Federated Learning
 selfdistillcore_pj/
 
 ├── src/
-│
+
 │   ├── client.py          # Client-side training logic
-│    
+ 
 │   ├── config.py          # Configuration parameters (seeds, epochs, etc.)
-│
+
 │   ├── model.py           # Model definitions (LeNet5, ResNet, etc.)
-│
+
 │   ├── server.py          # Server-side aggregation and evaluation
-│
+
 │   └── utils.py           # Utilities (data partitioning, evaluation)
-│
+
 ├── check_retention_factor.py  # Script to check retention factor growth
-│
+
 ├── plot_data_distribution.py  # Script to visualize client data distribution
-│
+
 ├── plot_figure.py         # Script to plot metrics from CSV results
-│
+
 ├── run.py                 # Main script to run the FL training
-│
+
 ├── data/                  # Dataset storage (auto-downloaded)
-│
+
 ├── logs/                  # Log files
-│
+
 ├── results_*.csv          # Output CSV files with metrics
-│
+
 └── README.md              # This file
 
 

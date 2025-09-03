@@ -16,10 +16,10 @@ This project implements the **SelfDistillCore** algorithm for Federated Learning
   - FedAvgM
   - FedEMA
 - **Supported Datasets**:
-  - MNIST
-  - BloodMNIST (from MedMNIST)
-  - OrganAMNIST (from MedMNIST)
-  - CIFAR-10
+  - MNIST: http://yann.lecun.org/exdb/mnist/index.html
+  - BloodMNIST (from MedMNIST): https://medmnist.com/
+  - OrganAMNIST (from MedMNIST): https://medmnist.com/
+  - CIFAR-10: https://www.cs.toronto.edu/~kriz/cifar.html
 - **Models**:
   - LeNet5 (for MNIST)
   - ResNet18Blood (custom ResNet for BloodMNIST)
@@ -71,7 +71,7 @@ text## Requirements
 - NumPy, Pandas, Matplotlib, Scikit-learn
 
 Install dependencies:
-```bash
+bash
 pip install torch torchvision medmnist numpy pandas matplotlib scikit-learn
 Usage
 1. Running the Federated Learning Training

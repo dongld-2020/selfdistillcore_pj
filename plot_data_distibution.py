@@ -12,8 +12,8 @@ import random
 GLOBAL_SEED = 42
 ALPHA_MNIST = 0.1
 ALPHA_ORGAN = 0.1
-ALPHA_BLOOD = 0.2
-ALPHA_CIFAR10 = 0.2
+ALPHA_BLOOD = 0.3
+ALPHA_CIFAR10 = 0.5
 NUM_CLIENTS = 50
 
 # Set seeds and limit thread usage

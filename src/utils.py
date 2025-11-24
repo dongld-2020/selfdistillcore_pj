@@ -1,9 +1,32 @@
+#utils.py
 import torch
 import torch.nn as nn
 from torch.utils.data import DataLoader, Subset
 import numpy as np
+import random
 from sklearn.metrics import precision_score, recall_score, f1_score, confusion_matrix
 from .config import GLOBAL_SEED, ALPHA, BATCH_SIZE, DEVICE
+import os
+
+def set_seed(seed):
+    """Thiết lập seed cho tính lặp lại (reproducibility)"""
+    random.seed(seed)
+    np.random.seed(seed)
+    torch.manual_seed(seed)
+    if torch.cuda.is_available():
+        torch.cuda.manual_seed(seed)
+        torch.cuda.manual_seed_all(seed)
+    
+
+    torch.backends.cudnn.deterministic = True
+    torch.backends.cudnn.benchmark = False
+    
+
+    torch.use_deterministic_algorithms(True, warn_only=True)
+    
+
+    os.environ['PYTHONHASHSEED'] = str(seed)
+    os.environ['CUBLAS_WORKSPACE_CONFIG'] = ':4096:8'
 
 def non_iid_partition_dirichlet(dataset, num_clients, partition="hetero", alpha=ALPHA, seed=GLOBAL_SEED):
     np.random.seed(seed)
